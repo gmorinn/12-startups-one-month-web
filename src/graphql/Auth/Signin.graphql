@@ -1,0 +1,6 @@
+mutation Signin($input: {email: $email, password: $password}) {
+    signin(input: $input) {
+        access_token
+        refresh_token
+    }
+}
