@@ -14,12 +14,13 @@ const App: FC = () => {
         <Routes>
           {/* PUBLIC ROUTE */}
           <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Homepage />} />
 
 
           {/* PRIVATE ROUTE */}
-          <Route element={<PrivateRoute user={undefined} />}>
-            <Route path="home" element={<Homepage />} />
-          </Route>
+          {/* <Route element={<PrivateRoute user={undefined} />}>
+            <Route path="/" element={<Homepage />} />
+          </Route> */}
 
         </Routes>
   );

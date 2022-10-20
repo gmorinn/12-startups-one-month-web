@@ -20,7 +20,7 @@ const NotFound: FC = () => {
                         La page que vous recherchez n'existe pas.
                     </p>
 
-                    <button onClick={() => window.open('/home', '_self')} className="px-6 py-2 text-sm font-semibold text-blue-700 bg-blue-100 cursor-pointer">
+                    <button onClick={() => window.open('/', '_self')} className="px-6 py-2 text-sm font-semibold text-blue-700 bg-blue-100 cursor-pointer">
                         Retournez à l'accueil.
                     </button>
                     </div>

@@ -5,27 +5,27 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import ErrorBoundary from "./screens/errorBoundary";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { ApolloProvider } from '@apollo/client';
 
 import Loader from './components/Loader';
 import App from './App';
+
+import client from './graphql/apollo-client';
 
 const g = "color:#00000;font-weight:bold;font-size:18px;";
 const hello = `%c 🤙 https://guillaume-morin.fr/`;
 console.info(hello, g);
 
-const queryClient = new QueryClient();
-
 ReactDOM.render(
   <ErrorBoundary>
     <Suspense fallback={<Loader />}>
-      <QueryClientProvider client={queryClient}>
+      <ApolloProvider client={client}>
         <RecoilRoot>
             <BrowserRouter>
                 <App />
           </BrowserRouter>
         </RecoilRoot>
-      </QueryClientProvider>
+      </ApolloProvider>
     </Suspense>
   </ErrorBoundary>,
   document.getElementById('root')
