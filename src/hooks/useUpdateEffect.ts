@@ -1,16 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-const useUpdateEffect = (callback:any,  dependencies:any = []) => {
-    const firstRender = useRef(true)
+const useUpdateEffect = (callback: any, dependencies: any = []) => {
+    const firstRender = useRef(true);
 
-    useEffect(() =>{
+    useEffect(() => {
         if (firstRender.current) {
-            firstRender.current = false
-            return
+            firstRender.current = false;
+            return;
         }
-        return callback()
-    // eslint-disable-next-line
-    }, dependencies)
-}
+        return callback();
+        // eslint-disable-next-line
+    }, dependencies);
+};
 
-export default useUpdateEffect
+export default useUpdateEffect;

@@ -1,14 +1,15 @@
 import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client';
-import { onError } from "@apollo/client/link/error";
+import { onError } from '@apollo/client/link/error';
 
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
+    if (graphQLErrors != null)
       graphQLErrors.forEach(({ message, locations, path }) =>
         console.log(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         )
       );
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (networkError != null) console.log(`[Network error]: ${networkError}`);
 });
 
 const httpLink = new HttpLink({
@@ -25,8 +26,8 @@ const client = new ApolloClient({
     name: 'GM API',
     version: '1.0',
     headers: {
-        // "jwtToken": localStorage.getItem("jwtToken") ? `Bearer ${localStorage.getItem("jwtToken")}` : "",
-        "Content-Type": "application/json",
+        'jwtToken': `Bearer ${localStorage.getItem('jwtToken')}`,
+        'Content-Type': 'application/json',
     }
 });
 

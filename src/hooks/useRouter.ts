@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
-const useRouter = () => {
+const useRouter = ():any => {
     const params = useParams();
     const location = useLocation();
     const navigate = useNavigate();
@@ -15,8 +15,8 @@ const useRouter = () => {
             },
             location,
             navigate,
-        }
-    }, [params, location, navigate])
-}
+        };
+    }, [params, location, navigate]);
+};
 
-export default useRouter
+export default useRouter;
