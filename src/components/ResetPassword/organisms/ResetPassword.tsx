@@ -1,14 +1,15 @@
 import React, { FC, useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
-import useRouter from '../../../hooks/useRouter';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { displaySuccess } from '../../../utils/toastMessage';
+import { displayError, displaySuccess } from '../../../utils/toastMessage';
 import InputResetPassword from '../molecules/InputResetPassword';
 import Button from '../../../common/Button';
-import { ButtonType, SuccessResult } from '../../../utils/types';
+import { ButtonType, ErrorGraphQL } from '../../../utils/types';
 import { UndefinedString } from '../../../utils/checkValue';
+import { useNavigate } from 'react-router-dom';
+import Err from '../../../utils/humanResp';
+import { useResetPasswordMutation } from '../../../graphql/generated/graphql';
 
 interface FormValues {
     email: string;
@@ -18,10 +19,23 @@ interface FormValues {
 }
 
 const FormCheckEmail: FC = () => {
-    const router = useRouter();
     const email = localStorage.getItem('email');
-    const { resetPassword, load } = useAuth();
     const [error, setError] = useState<string>('');
+
+    const navigate = useNavigate();
+
+    const [resetPassword, { loading }] = useResetPasswordMutation({
+        onCompleted: (res) => {
+            if (res?.resetPassword) {
+                displaySuccess('Mot de passe changé!');
+                localStorage.removeItem('email');
+                navigate('/login');
+            } else displayError('Email non trouvé');
+        },
+        onError: (error: ErrorGraphQL) => {
+            displayError(Err(error?.message));
+        },
+    });
 
     const schema = yup
         .object({
@@ -46,12 +60,15 @@ const FormCheckEmail: FC = () => {
 
     const onSubmit: SubmitHandler<FormValues> = async (res: FormValues): Promise<any> => {
         setError('');
-        await resetPassword(res).then((res: SuccessResult) => {
-            if (res?.success) {
-                displaySuccess('Mot de passe changé!');
-                localStorage.removeItem('email');
-                router.push('/');
-            } else console.error(res);
+        await resetPassword({
+            variables: {
+                input: {
+                    email: res.email,
+                    password: res.password,
+                    confirm_password: res.confirm_password,
+                    code: res.code,
+                },
+            },
         });
     };
 
@@ -91,8 +108,8 @@ const FormCheckEmail: FC = () => {
             <Button
                 type={ButtonType.SUBMIT}
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-3"
-                disabled={load}>
-                {load === true ? 'Chargement...' : 'Changer le mot de passe'}
+                disabled={loading}>
+                {loading ? 'Chargement...' : 'Changer le mot de passe'}
             </Button>
         </form>
     );

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import SignIn from '../components/Authentification/organisms/SignIn';
 import SignUp from '../components/Authentification/organisms/SignUp';
 
-const Homepage: FC = () => {
+const Login: FC = () => {
     return (
         <div className="">
             <SignIn />
@@ -11,4 +11,4 @@ const Homepage: FC = () => {
     );
 };
 
-export default Homepage;
+export default Login;
